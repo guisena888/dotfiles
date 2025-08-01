@@ -15,5 +15,7 @@ return {
   { import = "astrocommunity.test.neotest" },
   { import = "astrocommunity.pack.go" },
   { import = "astrocommunity.programming-language-support.kulala-nvim" },
+  { import = "astrocommunity.recipes.heirline-nvchad-statusline" },
+  { import = "astrocommunity.recipes.heirline-vscode-winbar" },
   -- import/override with your plugins folder
 }

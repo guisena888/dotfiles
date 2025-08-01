@@ -7,9 +7,13 @@ return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
   { import = "astrocommunity.recipes.picker-lsp-mappings" },
+  { import = "astrocommunity.recipes.telescope-nvim-snacks" },
   { import = "astrocommunity.colorscheme.catppuccin" },
   { import = "astrocommunity.scrolling.mini-animate" },
   { import = "astrocommunity.completion.copilot-lua" },
+  { import = "astrocommunity.completion.avante-nvim" },
+  { import = "astrocommunity.test.neotest" },
+  { import = "astrocommunity.pack.go" },
   { import = "astrocommunity.programming-language-support.kulala-nvim" },
   -- import/override with your plugins folder
 }

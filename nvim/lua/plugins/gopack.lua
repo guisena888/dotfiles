@@ -2,59 +2,58 @@ return {
   {
     "AstroNvim/astrolsp",
     optional = true,
-    ---@type AstroLSPOpts
     opts = {
-      ---@diagnostic disable-next-line: missing-fields
       config = {
         gopls = {
           settings = {
             gopls = {
               analyses = {
-                ST1003 = true,
-                fieldalignment = false,
-                fillreturns = true,
-                nilness = true,
-                nonewvars = true,
-                shadow = true,
-                undeclaredname = true,
-                unreachable = true,
-                unusedparams = true,
-                unusedwrite = true,
-                useany = true,
+                unusedparams = false,
+                shadow = false,
+                nilness = false,
+                unusedwrite = false,
               },
               codelenses = {
-                generate = true, -- show the `go generate` lens.
-                regenerate_cgo = true,
-                test = true,
-                tidy = true,
-                upgrade_dependency = true,
-                vendor = true,
+                generate = false,
+                regenerate_cgo = false,
+                test = false,
+                tidy = false,
+                upgrade_dependency = false,
+                vendor = false,
               },
-              hints = {
-                assignVariableTypes = true,
-                compositeLiteralFields = true,
-                compositeLiteralTypes = true,
-                constantValues = true,
-                functionTypeParameters = true,
-                parameterNames = true,
-                rangeVariableTypes = true,
-              },
-              buildFlags = { "-tags", "integration" },
-              completeUnimported = true,
-              diagnosticsDelay = "500ms",
-              gofumpt = false,
+              directoryFilters = { "-vendor", "-testdata", "-.git", "-node_modules" },
+              staticcheck = false,
+              diagnosticsDelay = "10000ms",
+              gofumpt = true,
               matcher = "Fuzzy",
               semanticTokens = true,
-              staticcheck = true,
               symbolMatcher = "fuzzy",
               usePlaceholders = true,
+              buildFlags = { "-tags", "integration" },
+              completeUnimported = true,
+              -- Optimized timeout settings
+              completionBudget = "200ms",
+              importShortcut = "Both",
+              deepCompletion = false,
+              experimentalPostfixCompletions = false,
             },
+          },
+          -- LSP client timeout settings
+          timeout_ms = 10000,
+          flags = {
+            debounce_text_changes = 150,
           },
         },
       },
+      -- Global LSP settings
+      on_attach = function(client, bufnr)
+        -- Increase timeout for gopls client
+        if client.name == "gopls" then client.config.timeout = 10000 end
+      end,
     },
   },
-  -- Golang support
+
+  -- Golang Treesitter support
   {
     "nvim-treesitter/nvim-treesitter",
     optional = true,
@@ -66,6 +65,7 @@ return {
     end,
   },
 
+  -- Mason null-ls tools
   {
     "jay-babu/mason-null-ls.nvim",
     optional = true,
@@ -76,6 +76,8 @@ return {
       )
     end,
   },
+
+  -- Mason LSP config
   {
     "williamboman/mason-lspconfig.nvim",
     optional = true,
@@ -83,6 +85,8 @@ return {
       opts.ensure_installed = require("astrocore").list_insert_unique(opts.ensure_installed, { "gopls" })
     end,
   },
+
+  -- Mason tool installer
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
     optional = true,
@@ -93,6 +97,8 @@ return {
       )
     end,
   },
+
+  -- DAP Go debugging
   {
     "leoluz/nvim-dap-go",
     ft = "go",
@@ -108,6 +114,8 @@ return {
     },
     opts = {},
   },
+
+  -- Gopher.nvim for Go utilities
   {
     "olexsmir/gopher.nvim",
     ft = "go",
@@ -120,10 +128,12 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      { "williamboman/mason.nvim", optional = true }, -- by default use Mason for go dependencies
+      { "williamboman/mason.nvim", optional = true },
     },
     opts = {},
   },
+
+  -- Neotest Go testing
   {
     "nvim-neotest/neotest",
     optional = true,
@@ -133,15 +143,28 @@ return {
       table.insert(opts.adapters, require "neotest-golang"(require("astrocore").plugin_opts "neotest-golang"))
     end,
   },
+
+  -- Conform.nvim formatting with goimports
   {
     "stevearc/conform.nvim",
     optional = true,
     opts = {
       formatters_by_ft = {
-        go = { "goimports", lsp_format = "last" },
+        go = { "goimports" },
+      },
+      format_on_save = {
+        timeout_ms = 5000,
+        lsp_fallback = true,
+      },
+      formatters = {
+        goimports = {
+          timeout_ms = 3000,
+        },
       },
     },
   },
+
+  -- Mini.icons for Go file icons
   {
     "echasnovski/mini.icons",
     optional = true,

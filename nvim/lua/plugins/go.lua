@@ -57,7 +57,6 @@ return {
   -- Golang support
   {
     "nvim-treesitter/nvim-treesitter",
-    optional = true,
     opts = function(_, opts)
       if opts.ensure_installed ~= "all" then
         opts.ensure_installed =
@@ -119,20 +118,30 @@ return {
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
+      { "nvim-treesitter/nvim-treesitter" },
       { "williamboman/mason.nvim", optional = true }, -- by default use Mason for go dependencies
     },
     opts = {},
   },
   {
     "nvim-neotest/neotest",
-    optional = true,
-    dependencies = { "fredrikaverpil/neotest-golang" },
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      { "nvim-treesitter/nvim-treesitter" },
+      "fredrikaverpil/neotest-golang",
+    },
     opts = function(_, opts)
       if not opts.adapters then opts.adapters = {} end
       table.insert(
         opts.adapters,
-        require "neotest-golang" { testify_enabled = true }(require("astrocore").plugin_opts "neotest-golang")
+        require "neotest-golang" {
+          testify_enabled = true,
+          env = {
+            AVENUE_SERVICE_NAME = "test",
+          },
+        }(require("astrocore").plugin_opts "neotest-golang")
       )
     end,
   },

@@ -7,16 +7,18 @@ return {
   "AstroNvim/astrocommunity",
 
   { import = "astrocommunity.recipes.picker-lsp-mappings" },
-  -- { import = "astrocommunity.recipes.heirline-nvchad-statusline" },
   { import = "astrocommunity.recipes.heirline-vscode-winbar" },
 
   -- language packs
   { import = "astrocommunity.pack.lua" },
   { import = "astrocommunity.pack.markdown" },
-  -- { import = "astrocommunity.pack.yaml" },
-  -- { import = "astrocommunity.pack.go" },
+  { import = "astrocommunity.pack.yaml" },
+  { import = "astrocommunity.pack.rust" },
 
+  -- TESTING
   { import = "astrocommunity.test.neotest" },
+
+  -- TMUX
   { import = "astrocommunity.terminal-integration.vim-tmux-navigator" },
 
   -- THEMES
@@ -25,4 +27,6 @@ return {
   { import = "astrocommunity.colorscheme.kanagawa-nvim" },
   { import = "astrocommunity.colorscheme.tokyonight-nvim" },
   { import = "astrocommunity.colorscheme.onedarkpro-nvim" },
+
+  { import = "astrocommunity.icon.mini-icons" },
 }
